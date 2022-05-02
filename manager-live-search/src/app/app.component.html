@@ -1,7 +1,7 @@
 <app-input-search (finalTextToSearch)="onfinalTextToSearch($event)" (showAllManagersData)="displayAllManagersData($event)"></app-input-search>
-<ng-container *ngIf="useThisOnHtmlManagers != null">
-  <ol *ngIf="useThisOnHtmlManagers?.length > 0; else noManagerFound">
-      <li *ngFor="let item of useThisOnHtmlManagers">
+<ng-container *ngIf="filteredManagers != null && !hideManagersData">
+  <ol *ngIf="filteredManagers?.length > 0; else noManagerFound">
+      <li *ngFor="let item of filteredManagers">
           {{item.firstName + ' ' + item.lastName}}
       </li>
   </ol>

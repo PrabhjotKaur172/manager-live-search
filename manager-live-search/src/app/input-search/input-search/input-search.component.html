@@ -1,1 +1,2 @@
-<input type="text" placeholder="Choose Manager" [value]="initialManagerValue" (click)="showAllManagers()" (input)="onInputValue($event)">
+<input type="text" placeholder="Choose Manager" [value]="initialManagerValue" (click)="showAllManagers()" 
+    (input)="onInputValue($event)" (blur)='hideManagers()'>

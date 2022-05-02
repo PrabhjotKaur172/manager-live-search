@@ -45,4 +45,8 @@ export class InputSearchComponent implements OnInit {
     this.showAllManagersData.emit("true");
   }
 
+  hideManagers(){
+    this.showAllManagersData.emit("false");
+  }
+
 }

@@ -11,8 +11,10 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'manager-live-search';
   allManagers: any;
   managers: any;
-  useThisOnHtmlManagers: any;
+  filteredManagers: any;
   managersDataSubscription: any;
+  newText: any;
+  hideManagersData: boolean = false;
   searchedManagersSubscriptionData: Subscription[] = [];
 
   constructor(
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy{
     ) {}
 
     ngOnInit() {
+      // this is to get the list of all managers from api
       this.managersDataSubscription = this.managerService.getManagersData().subscribe(
         response => {
           this.allManagers = response;
@@ -32,10 +35,13 @@ export class AppComponent implements OnInit, OnDestroy{
     }
 
    onfinalTextToSearch(newText: string) {
+     //this method is used to show the list of managers according to the input text entered in the field
+     this.newText = newText;
      if(newText == ""){
-        this.useThisOnHtmlManagers = [...this.managers];
+        this.filteredManagers = [...this.managers];
      } else {
-        this.useThisOnHtmlManagers = this.managers.filter( (name: any) => {
+        this.filteredManagers = this.managers.filter( (name: any) => {
+          // the lowercasing is done to make the filtering case insensitive
           let firstNameLowercase = name.firstName.toLowerCase();
           let lastNameLowercase = name.lastName.toLowerCase();
           let newTextLowercase = newText.toLowerCase();
@@ -57,12 +63,20 @@ export class AppComponent implements OnInit, OnDestroy{
         newManagerData.lastName = item.attributes.lastName;
         return newManagerData;
     });
-    this.useThisOnHtmlManagers = [...this.managers];
+    this.filteredManagers = [...this.managers];
   }
 
   displayAllManagersData(e: any){
-    if(e === 'true'){
+    if(e === 'true' && this.newText == null){
+      // this is to show the list of all the managers when the user clicks first time and there is not input text entered
       this.getManagersData();
+    } else if(e === 'false'){
+      // this is used to hide list of available managers when input field loses focus
+      this.hideManagersData = true;
+    } else if(e === 'true' && this.newText != null){
+      // this is used to show the list of filtered managers again when user clicks back to the input field with the kept text
+      this.filteredManagers = this.filteredManagers;
+      this.hideManagersData = false;
     }
   }
 
