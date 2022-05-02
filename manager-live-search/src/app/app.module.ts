@@ -18,7 +18,8 @@ import { InputSearchComponent } from './input-search/input-search/input-search.c
     FormsModule
   ],
   providers: [
-    ManagerService
+    ManagerService,
+    InputSearchComponent
   ],
   bootstrap: [AppComponent]
 })

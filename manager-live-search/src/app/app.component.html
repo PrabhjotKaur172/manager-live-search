@@ -1,11 +1,15 @@
-<app-input-search (finalTextToSearch)="onfinalTextToSearch($event)" (showAllManagersData)="displayAllManagersData($event)"></app-input-search>
+<app-input-search [displayManagerName] = "selectedManager" [managerSelectedFromDropdown]="managerSelectedFromDropdown"
+(finalTextToSearch)="onfinalTextToSearch($event)" (showAllManagersData)="displayAllManagersData($event)"></app-input-search>
+<div>
 <ng-container *ngIf="filteredManagers != null && !hideManagersData">
-  <ol *ngIf="filteredManagers?.length > 0; else noManagerFound">
-      <li *ngFor="let item of filteredManagers">
-          {{item.firstName + ' ' + item.lastName}}
-      </li>
-  </ol>
+  <select name="managers" class="select-dropdown rounded-inputs20 select-select col-md-3" #managerVal (change)="onSelectingManager(managerVal.value)"
+     *ngIf="filteredManagers?.length > 0; else noManagerFound">
+    <option *ngFor="let manager of filteredManagers"  [value]="manager.fullName">
+        {{manager.firstName + ' ' + manager.lastName}}</option>
+    </select>
+
   <ng-template #noManagerFound>
       No manager Found.
   </ng-template>
 </ng-container>
+</div>

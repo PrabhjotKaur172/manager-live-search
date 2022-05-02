@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -13,6 +13,8 @@ export class InputSearchComponent implements OnInit {
   debounceTime = 1000;
   @Output() finalTextToSearch = new EventEmitter<string>();
   @Output() showAllManagersData = new EventEmitter<string>();
+  @Input() displayManagerName: any;
+  @Input() managerSelectedFromDropdown: any;
 
   inputManagerValue = new Subject<string>();
 
@@ -24,6 +26,12 @@ export class InputSearchComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   constructor() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(this.managerSelectedFromDropdown){
+      this.initialManagerValue = this.managerSelectedFromDropdown;
+    }
   }
 
   ngOnInit() {
@@ -45,7 +53,25 @@ export class InputSearchComponent implements OnInit {
     this.showAllManagersData.emit("true");
   }
 
-  hideManagers(){
+  hideManagers(event:any){
+   if(event.relatedTarget == null){
+     // managers data hides if the user loses focus from input field and does not click on select dropdown
+      this.showAllManagersData.emit("false");
+    } else if(event.relatedTarget.classList.contains('select-dropdown')){
+      // managers data should not hide if the user loses focus from input field and clicks on select dropdown
+      this.showAllManagersData.emit("true");
+    }
+  }
+  
+  onEnter(){
+    // this shows manager name on input field on pressing enter key and hides the list of managers data
+    this.initialManagerValue = this.displayManagerName[0].firstName + ' ' + this.displayManagerName[0].lastName;
+    this.showAllManagersData.emit("false");
+  }
+
+  onSelection(manager: any){
+    // this shows manager name on input field on selecting any option from dropdown and hides the list of managers data
+    this.initialManagerValue = manager;
     this.showAllManagersData.emit("false");
   }
 

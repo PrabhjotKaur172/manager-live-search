@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ManagerService } from './app.service';
+import { InputSearchComponent } from './input-search/input-search/input-search.component';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,13 @@ export class AppComponent implements OnInit, OnDestroy{
   managersDataSubscription: any;
   newText: any;
   hideManagersData: boolean = false;
+  selectedManager: any;
+  managerSelectedFromDropdown: any;
   searchedManagersSubscriptionData: Subscription[] = [];
 
   constructor(
-    private managerService: ManagerService
+    private managerService: ManagerService,
+    private inputSearchComponent : InputSearchComponent
     ) {}
 
     ngOnInit() {
@@ -49,16 +53,19 @@ export class AppComponent implements OnInit, OnDestroy{
             return name;
           }
         });
+        this.selectedManager = this.filteredManagers;
      }
    
   }
 
   getManagersData(){
-    this.managers = this.allManagers.data.map((item: any) =>{
+    this.managers = this.allManagers.data.map((item: any,index : any) =>{
         let newManagerData = {
+          fullName : "",
           firstName : "",
           lastName : ""
         }
+        newManagerData.fullName = item.attributes.firstName+ ' ' + item.attributes.lastName;
         newManagerData.firstName = item.attributes.firstName;
         newManagerData.lastName = item.attributes.lastName;
         return newManagerData;
@@ -70,14 +77,23 @@ export class AppComponent implements OnInit, OnDestroy{
     if(e === 'true' && this.newText == null){
       // this is to show the list of all the managers when the user clicks first time and there is not input text entered
       this.getManagersData();
+      this.hideManagersData = false;
     } else if(e === 'false'){
       // this is used to hide list of available managers when input field loses focus
       this.hideManagersData = true;
     } else if(e === 'true' && this.newText != null){
       // this is used to show the list of filtered managers again when user clicks back to the input field with the kept text
       this.filteredManagers = this.filteredManagers;
+      this.selectedManager = this.filteredManagers;
       this.hideManagersData = false;
     }
+  }
+
+  onSelectingManager(manager: any){
+    // on selecting manager name from dropdown via click or enter key, the name starts displaying on the input field
+    this.managerSelectedFromDropdown = manager;
+    this.inputSearchComponent.onSelection(this.selectedManager);
+    this.hideManagersData = true;
   }
 
   ngOnDestroy() {

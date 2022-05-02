@@ -1,2 +1,2 @@
 <input type="text" placeholder="Choose Manager" [value]="initialManagerValue" (click)="showAllManagers()" 
-    (input)="onInputValue($event)" (blur)='hideManagers()'>
+    (input)="onInputValue($event)" (blur)='hideManagers($event)' (keyup.enter)="onEnter()">
