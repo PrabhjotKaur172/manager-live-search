@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy{
             return name;
           }
         });
-        this.selectedManager = this.filteredManagers;
+        // this.selectedManager = this.filteredManagers;
      }
    
   }

@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class InputSearchComponent implements OnInit {
 
   initialManagerValue: string = '';
-  debounceTime = 1000;
+  debounceTime = 500;
   @Output() finalTextToSearch = new EventEmitter<string>();
   @Output() showAllManagersData = new EventEmitter<string>();
   @Output() navigateUsingArrowKeys = new EventEmitter<string>();
