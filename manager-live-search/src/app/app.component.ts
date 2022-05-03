@@ -18,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy{
   hideManagersData: boolean = false;
   selectedManager: any;
   managerSelectedFromDropdown: any;
+  linkIndex = 0;
   searchedManagersSubscriptionData: Subscription[] = [];
 
   constructor(
@@ -91,9 +92,42 @@ export class AppComponent implements OnInit, OnDestroy{
 
   onSelectingManager(manager: any){
     // on selecting manager name from dropdown via click or enter key, the name starts displaying on the input field
-    this.managerSelectedFromDropdown = manager;
-    this.inputSearchComponent.onSelection(this.selectedManager);
+    if(typeof(manager) == 'object'){
+      this.managerSelectedFromDropdown = manager[0].firstName + ' ' + manager[0].lastName;
+    } else{
+      this.managerSelectedFromDropdown = manager;
+    }
+    // this.inputSearchComponent.onSelection(this.selectedManager);
+    this.inputSearchComponent.onSelection(this.managerSelectedFromDropdown);
     this.hideManagersData = true;
+  }
+
+  updateManagerName(linkIndex: number){
+    let filterValue = this.filteredManagers.filter((manager: any,index: any) => {
+      if(index === linkIndex){
+        return manager;
+      }
+    });
+    this.selectedManager = filterValue;
+  }
+
+  navigateUsingArrowKeys(event: any){
+    switch (event.keyCode) {
+      case 38: // this is the ascii of arrow up        
+        this.linkIndex === -1 ?  this.linkIndex = 0 : this.linkIndex-- ;
+      
+        // calls when DOWN key press...
+        this.linkIndex === -1 ? (this.linkIndex = this.filteredManagers.length - 1) : '';
+        this.updateManagerName(this.linkIndex);
+      break;
+
+      case 40: // this is the ascii of arrow down
+       // calls when UP key press...
+       this.filteredManagers.length-1 <= this.linkIndex ? (this.linkIndex = -1) : '';
+        this.linkIndex++;
+        this.updateManagerName(this.linkIndex);
+      break;       
+  }
   }
 
   ngOnDestroy() {

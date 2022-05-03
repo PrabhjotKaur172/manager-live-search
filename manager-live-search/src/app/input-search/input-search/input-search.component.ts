@@ -13,6 +13,7 @@ export class InputSearchComponent implements OnInit {
   debounceTime = 1000;
   @Output() finalTextToSearch = new EventEmitter<string>();
   @Output() showAllManagersData = new EventEmitter<string>();
+  @Output() navigateUsingArrowKeys = new EventEmitter<string>();
   @Input() displayManagerName: any;
   @Input() managerSelectedFromDropdown: any;
 
@@ -73,6 +74,10 @@ export class InputSearchComponent implements OnInit {
     // this shows manager name on input field on selecting any option from dropdown and hides the list of managers data
     this.initialManagerValue = manager;
     this.showAllManagersData.emit("false");
+  }
+
+  navigateUsingKey(event: any){
+    this.navigateUsingArrowKeys.emit(event);
   }
 
 }
