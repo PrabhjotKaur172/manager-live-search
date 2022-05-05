@@ -3,7 +3,7 @@
 (navigateUsingArrowKeys)="navigateUsingArrowKeys($event)"></app-input-search>
 <div>
 <ng-container *ngIf="filteredManagers != null && !hideManagersData">
-  <select name="managers" class="select-dropdown rounded-inputs20 select-select col-md-3" 
+  <select id="managerSelect" name="managers" class="select-dropdown rounded-inputs20 select-select col-md-3" 
      #managerVal (change)="onSelectingManager(managerVal.value)"
      *ngIf="filteredManagers?.length > 0; else noManagerFound" size="2">
     <option *ngFor="let manager of filteredManagers; let i = index;"
