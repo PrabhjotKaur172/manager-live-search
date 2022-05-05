@@ -14,6 +14,7 @@ Prerequisites to run this project are :
  c. use command 'npm install' to install the necessary Angular npm packages and other dependencies.
  d. use command 'ng serve' to run this application on local server.
  e. open link http://localhost:4200/ on any browser to check the application after running ng serve.
+ f. use command 'ng test' to run the test cases.
 
  4. Brief Explanation of what this application does and how:
 
@@ -44,6 +45,12 @@ j. If the user again clicks back on the input field, the list of filtered manage
 k. I have also implemented onSelectingManager method in 'AppComponent'. This method is called, if the user navigates inside the managers list and selects a manager name by clicking on it. This method calls a method onSelection of 'InputSearchComponent' which is used to update the manager name in the input field and then emits showAllManagersData event to hide the available managers list.
 
 l. Lastly, I have used ngOnDestroy method in both the components to cancel all the subscriptions to avoid memory leaks.
+
+5. Test Cases :
+I have written two test cases for appComponent.
+      1. "populated manager list in the dropdown when a user clicked the input field" : This test case means that, if a user clicks on input field, the manager list gets data, which is happening on init of the appComponent. To implement this test case, I have created a stub of managerService called app-stubs.service.mock.ts. This mock service will provide me the same data. Hence, I am not calling real service. I am calling mockservice to get list of managers. So the test case expects length of managers to be greater than 0, once the user clicks on the input field.
+
+      2. 'populated input field when a manager name is selected in the dropdown list' : This test case is testing if a user clicks on input field, then selects a name from the list, then then input field should be populated with that selected name. This test is also running successfully. First, I am clicking input field of InputSearchComponent. Then, I am finding select element from appComponent html, adding value of first option to the select element. Lastly, I am using dispatchEvent so that component detects changes in select element. At the end, I am assigning this vale to the input field and checking if this input field is matching the static value which I provided in the test case or not.
 
 
 
